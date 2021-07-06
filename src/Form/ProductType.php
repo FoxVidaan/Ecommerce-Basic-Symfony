@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProductType extends AbstractType
 {
@@ -28,7 +29,8 @@ class ProductType extends AbstractType
                 'label' => 'Nom du produit',
                 'attr' => [
                     'placeholder' => 'Veuillez indiquer le nom du produit'
-                ]
+                ],
+                'required' => false,
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Description courte',
@@ -41,6 +43,7 @@ class ProductType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Veuillez indiquer le prix du produit en €'
                 ],
+                'required' => false,
                 'divisor' => 100
             ])
             ->add('mainPicture', UrlType::class, [
