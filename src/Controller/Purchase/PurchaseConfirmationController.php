@@ -7,6 +7,7 @@ use App\Entity\Purchase;
 use App\Entity\PurchaseItem;
 use App\Entity\User;
 use App\Form\CartConfirmationType;
+use App\Purchase\PurchasePersister;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,11 +24,13 @@ class PurchaseConfirmationController extends AbstractController
 {
     protected $cartService;
     protected $manager;
+    protected $persister;
 
-    public function __construct(CartService $cartService, EntityManagerInterface $manager)
+    public function __construct(CartService $cartService, EntityManagerInterface $manager, PurchasePersister $persister)
     {
         $this->cartService = $cartService;
         $this->manager = $manager;
+        $this->persister = $persister;
     }
 
     /**
@@ -44,9 +47,6 @@ class PurchaseConfirmationController extends AbstractController
             return $this->redirectToRoute('cart_show');
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-
         $cartItems = $this->cartService->getDetailCartItems();
 
         if (count($cartItems) === 0) {
@@ -57,31 +57,10 @@ class PurchaseConfirmationController extends AbstractController
         /** @var Purchase $purchase */
         $purchase = $form->getData();
 
-        $purchase
-            ->setUser($user)
-            ->setPurchasedAt(new \DateTime())
-            ->setTotal($this->cartService->getTotal());
+        $this->persister->storePurchase($purchase);
 
-        $this->manager->persist($purchase);
-
-        foreach ($this->cartService->getDetailCartItems() as $cartItem) {
-            $purchaseItem = new PurchaseItem();
-            $purchaseItem
-                ->setPurchase($purchase)
-                ->setProduct($cartItem->product)
-                ->setQuantity($cartItem->qty)
-                ->setTotal($cartItem->getTotal())
-                ->setProductName($cartItem->product->getName())
-                ->setProductPrice($cartItem->product->getPrice());
-
-            $this->manager->persist($purchaseItem);
-        }
-
-        $this->manager->flush();
-
-        $this->cartService->empty();
-
-        $this->addFlash('success', "C'est good");
-        return $this->redirectToRoute('purchase_index');
+        return $this->redirectToRoute('purchase_payment_form', [
+            'id' => $purchase->getId()
+        ]);
     }
 }
