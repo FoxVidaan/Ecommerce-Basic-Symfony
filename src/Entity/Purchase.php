@@ -88,7 +88,6 @@ class Purchase
      * @ORM\PreFlush()
      */
     public function preFlush() {
-        dd($this->purchaseItems);
         $total = 0;
 
         foreach ($this->purchaseItems as $item) {
