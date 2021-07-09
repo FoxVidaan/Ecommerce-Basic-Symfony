@@ -43,3 +43,23 @@ services:
       $secretKey: "%env(STRIPE_SECRET_KEY)%"
 
   Cocur\Slugify\Slugify: ~
+
+  App\Doctrine\Listener\ProductSlugListener:
+    tags:
+      [
+        {
+          name: 'doctrine.orm.entity.listener',
+          event: 'prePersist',
+          entity: App\Entity\Product
+        }
+      ]
+
+  App\Doctrine\Listener\CategorySlugListener:
+    tags:
+      [
+        {
+          name: 'doctrine.orm.entity.listener',
+          event: 'prePersist',
+          entity: App\Entity\Category
+        }
+      ]

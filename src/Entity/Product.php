@@ -78,6 +78,8 @@ class Product
 //        $metadata->addPropertyConstraint('price', new Assert\NotBlank(['message' => "Le prix du produit est obligatoire"]));
 //    }
 
+
+
     public function getId(): ?int
     {
         return $this->id;

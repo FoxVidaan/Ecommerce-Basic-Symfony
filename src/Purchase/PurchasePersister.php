@@ -31,7 +31,6 @@ class PurchasePersister
 
         $purchase
             ->setUser($user)
-            ->setPurchasedAt(new \DateTime())
             ->setTotal($this->cartService->getTotal());
 
         $this->em->persist($purchase);

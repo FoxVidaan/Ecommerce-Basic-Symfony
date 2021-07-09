@@ -49,7 +49,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/admin/category/edit/{id}", name="category_edit")
      */
-    public function edit($id, CategoryRepository $categoryRepository, SluggerInterface $slugger, EntityManagerInterface $manager, Request $request): Response
+    public function edit($id, CategoryRepository $categoryRepository, EntityManagerInterface $manager, Request $request): Response
     {
         $category = $categoryRepository->find($id);
 
@@ -62,8 +62,6 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $category->setSlug(strtolower($slugger->slug($category->getName())));
-
             $manager->flush();
 
             return $this->redirectToRoute('homepage');
