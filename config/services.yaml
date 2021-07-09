@@ -44,22 +44,22 @@ services:
 
   Cocur\Slugify\Slugify: ~
 
-  App\Doctrine\Listener\ProductSlugListener:
-    tags:
-      [
-        {
-          name: 'doctrine.orm.entity.listener',
-          event: 'prePersist',
-          entity: App\Entity\Product
-        }
-      ]
-
-  App\Doctrine\Listener\CategorySlugListener:
-    tags:
-      [
-        {
-          name: 'doctrine.orm.entity.listener',
-          event: 'prePersist',
-          entity: App\Entity\Category
-        }
-      ]
+#  App\Doctrine\Listener\ProductSlugListener:
+#    tags:
+#      [
+#        {
+#          name: 'doctrine.orm.entity.listener',
+#          event: 'prePersist',
+#          entity: App\Entity\Product
+#        }
+#      ]
+#
+#  App\Doctrine\Listener\CategorySlugListener:
+#    tags:
+#      [
+#        {
+#          name: 'doctrine.orm.entity.listener',
+#          event: 'prePersist',
+#          entity: App\Entity\Category
+#        }
+#      ]

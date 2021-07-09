@@ -10,19 +10,13 @@ class ProductSlugListener
 {
     protected $slugger;
 
-   public function __construct(SluggerInterface $slugger)
-   {
-       $this->slugger = $slugger;
-   }
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
 
-    public function prePersist(LifecycleEventArgs $event) {
-        /** @var Product $entity */
-        $entity = $event->getObject();
-
-        if (!$entity instanceof Product) {
-            return;
-        }
-
+    public function prePersist(Product $entity, LifecycleEventArgs $event)
+    {
         if (empty($entity->getSlug())) {
             $entity->setSlug(strtolower($this->slugger->slug($entity->getName())));
         }
